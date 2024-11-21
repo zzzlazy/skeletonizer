@@ -603,10 +603,10 @@ void runTests() {
           ),
           GoldenTestScenario(
             name: 'unite',
-            child: const Skeletonizer(
+            child: Skeletonizer(
               child: Skeleton.unite(
                   child: Row(
-                children: [
+                children: const [
                   Icon(Icons.ac_unit_outlined),
                   SizedBox(width: 20),
                   Icon(Icons.ac_unit_outlined),
@@ -617,11 +617,11 @@ void runTests() {
           ),
           GoldenTestScenario(
             name: 'unite:borderRadius',
-            child: const Skeletonizer(
+            child: Skeletonizer(
               child: Skeleton.unite(
                   borderRadius: BorderRadius.zero,
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(Icons.ac_unit_outlined),
                       SizedBox(width: 20),
                       Icon(Icons.ac_unit_outlined),

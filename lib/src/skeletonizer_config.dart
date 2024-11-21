@@ -6,7 +6,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 const _defaultTextBoneBorderRadius = TextBoneBorderRadius.fromHeightFactor(.5);
 
 /// The immutable configuration data for the skeletonizer theme.
-@immutable
 class SkeletonizerConfigData extends ThemeExtension<SkeletonizerConfigData> {
   /// Constructs a [SkeletonizerConfigData] instance with the given properties.
   ///

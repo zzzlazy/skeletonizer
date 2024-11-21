@@ -240,8 +240,8 @@ class _ButtonBone extends Bone {
         style,
         height ?? buttonTheme.height,
       );
-      effectiveBorderRadius = shapeInfo.$1;
-      effectiveShape = shapeInfo.$2;
+      effectiveBorderRadius = shapeInfo[0];
+      effectiveShape = shapeInfo[1];
     }
 
     return Bone(
@@ -254,37 +254,45 @@ class _ButtonBone extends Bone {
     );
   }
 
-  (BorderRadiusGeometry, BoxShape) _getShape(ButtonStyle style, double height) {
+  List _getShape(ButtonStyle style, double height) {
     final shape = style.shape?.resolve(const {});
-    return switch (shape.runtimeType) {
-      RoundedRectangleBorder _ => (
+    switch (shape.runtimeType) {
+      case RoundedRectangleBorder:
+        return [
           (shape as RoundedRectangleBorder).borderRadius,
           BoxShape.rectangle
-        ),
-      CircleBorder _ => (BorderRadius.zero, BoxShape.circle),
-      StadiumBorder _ => (
+        ];
+      case CircleBorder:
+        return [BorderRadius.zero, BoxShape.circle];
+      case StadiumBorder:
+        return [
           BorderRadius.circular(height / 2),
           BoxShape.rectangle
-        ),
-      _ => (BorderRadius.zero, BoxShape.rectangle)
-    };
+        ];
+      default:
+        return [BorderRadius.zero, BoxShape.rectangle];
+    }
   }
 
   ButtonStyle _getStyle(BuildContext context) {
-    return switch (type) {
-      BoneButtonType.elevated => ElevatedButtonTheme.of(context).style ??
-          const ElevatedButton(onPressed: null, child: SizedBox.shrink())
-              .defaultStyleOf(context),
-      BoneButtonType.filled => FilledButtonTheme.of(context).style ??
-          const FilledButton(onPressed: null, child: SizedBox.shrink())
-              .defaultStyleOf(context),
-      BoneButtonType.text => TextButtonTheme.of(context).style ??
-          const TextButton(onPressed: null, child: SizedBox.shrink())
-              .defaultStyleOf(context),
-      BoneButtonType.outlined => OutlinedButtonTheme.of(context).style ??
-          const OutlinedButton(onPressed: null, child: SizedBox.shrink())
-              .defaultStyleOf(context),
-    };
+    switch (type) {
+      case BoneButtonType.elevated:
+        return ElevatedButtonTheme.of(context).style ??
+            const ElevatedButton(onPressed: null, child: SizedBox.shrink())
+                .defaultStyleOf(context);
+      case BoneButtonType.filled:
+        return FilledButtonTheme.of(context).style ??
+            const FilledButton(onPressed: null, child: SizedBox.shrink())
+                .defaultStyleOf(context);
+      case BoneButtonType.text:
+        return TextButtonTheme.of(context).style ??
+            const TextButton(onPressed: null, child: SizedBox.shrink())
+                .defaultStyleOf(context);
+      case BoneButtonType.outlined:
+        return OutlinedButtonTheme.of(context).style ??
+            const OutlinedButton(onPressed: null, child: SizedBox.shrink())
+                .defaultStyleOf(context);
+    }
   }
 }
 
@@ -554,6 +562,7 @@ class _BoneBoxDecorationPainter extends BoxPainter {
         final Offset center = rect.center;
         final double radius = rect.shortestSide / 2.0;
         canvas.drawCircle(center, radius, shaderPaint);
+        break;
       case BoxShape.rectangle:
         if (_decoration.borderRadius == null ||
             _decoration.borderRadius == BorderRadius.zero) {
